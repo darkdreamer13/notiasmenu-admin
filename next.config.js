@@ -1,14 +1,9 @@
-import type { NextConfig } from "next"
-
-const nextConfig: NextConfig = {
-  eslint: {
-    // Προσωρινή απενεργοποίηση του ESLint κατά τη διάρκεια του build
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    // Προσωρινή απενεργοποίηση του TypeScript checking κατά τη διάρκεια του build
-    ignoreBuildErrors: true,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ['notiaskalamata.gr'],
   },
 }
 
-export default nextConfig
+module.exports = nextConfig
