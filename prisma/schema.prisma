@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id           Int           @id @default(autoincrement())
+  name_gr      String
+  name_en      String
+  sort_order   Int           @default(0)
+  active       Boolean       @default(true)
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  products     Product[]
+  subcategories Subcategory[]
+}
+
+model Subcategory {
+  id          Int       @id @default(autoincrement())
+  category_id Int
+  name_gr     String
+  name_en     String
+  sort_order  Int       @default(0)
+  active      Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  category    Category  @relation(fields: [category_id], references: [id])
+  products    Product[]
+}
+
+model Product {
+  id             Int          @id @default(autoincrement())
+  category_id    Int
+  subcategory_id Int?
+  name_gr        String
+  name_en        String
+  description_gr String?
+  description_en String?
+  price_value    Float
+  price_value2   Float?
+  price_unit     String?
+  winery_gr      String?
+  winery_en      String?
+  is_frozen      Boolean      @default(false)
+  special_order  Boolean      @default(false)
+  sort_order     Int          @default(0)
+  active         Boolean      @default(true)
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
+  category       Category     @relation(fields: [category_id], references: [id])
+  subcategory    Subcategory? @relation(fields: [subcategory_id], references: [id])
+}
+
+model Setting {
+  id         Int      @id @default(autoincrement())
+  key        String   @unique
+  value      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  password   String
+  role       String   @default("user")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
